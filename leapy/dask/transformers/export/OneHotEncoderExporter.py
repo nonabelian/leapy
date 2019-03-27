@@ -1,11 +1,13 @@
 import numpy as np
 
+import leapy
 from leapy.runtime.transformers import OneHotEncoderRuntime
 
 
 class OneHotEncoderExporter():
-    def __call__(self, ohe):
-        cats = ohe.categories_
+    @staticmethod
+    def to_runtime(self):
+        cats = self.categories_
         ohe_runtime = OneHotEncoderRuntime(categories=cats,
                                            sparse=False)
 

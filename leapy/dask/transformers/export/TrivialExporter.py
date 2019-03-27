@@ -1,3 +1,4 @@
 class TrivialExporter():
-    def __call__(self, transformer):
-        return transformer
+    @staticmethod
+    def to_runtime(self):
+        return self

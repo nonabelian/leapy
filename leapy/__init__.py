@@ -1,18 +1,19 @@
+from types import MethodType
+
 from sklearn.pipeline import Pipeline
 from leapy.dask.transformers import OneHotEncoder
 from dask_ml.linear_model import LogisticRegression
 from .dask.transformers.export import OneHotEncoderExporter
 from .dask.transformers.export import TrivialExporter
 
-def export(pipeline):
-    pipe_runtime = Pipeline([(name, step.export(step)) for name, step in
-                             pipeline.named_steps.items()])
+def to_runtime(self):
+    pipe_runtime = Pipeline([(name, step.to_runtime()) for name, step in
+                             self.named_steps.items()])
 
     return pipe_runtime
 
-setattr(Pipeline, 'export', export)
-
-setattr(OneHotEncoder, 'export', OneHotEncoderExporter())
-setattr(LogisticRegression, 'export', TrivialExporter())
-# setattr(SGDClassifier, 'export', TrivialExporter())
-# setattr(Incremental, 'export', TrivialExporter())
+setattr(Pipeline, 'to_runtime', to_runtime)
+setattr(OneHotEncoder, 'to_runtime', OneHotEncoderExporter.to_runtime)
+setattr(LogisticRegression, 'to_runtime', TrivialExporter.to_runtime)
+# setattr(SGDClassifier, 'to_runtime', TrivialExporter())
+# setattr(Incremental, 'to_runtime', TrivialExporter())

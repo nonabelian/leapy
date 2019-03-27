@@ -69,9 +69,9 @@ class FeaturePipeline(object):
         return self.transform(X)
 
     @staticmethod
-    def export(pipeline):
+    def to_runtime(pipeline):
         pipe_runtime = FeaturePipelineRuntime(
-            [(name, step.export(step), pipeline.named_steps_cols[name])
+            [(name, step.to_runtime(), pipeline.named_steps_cols[name])
              for name, step in pipeline.named_steps.items()])
         pipe_runtime.named_schema = pipeline.named_schema
         pipe_runtime.drop = pipeline.drop

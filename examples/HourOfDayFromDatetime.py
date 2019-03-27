@@ -25,6 +25,6 @@ class HourOfDayFromDatetime(object):
         return self.transform(X)
 
     @staticmethod
-    def export(transformer):
+    def to_runtime(transformer):
         # No copying necessary for this simple transformer
         return HourOfDayFromDatetimeRuntime()

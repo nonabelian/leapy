@@ -87,7 +87,7 @@ if __name__ == '__main__':
     ])
 
     pipe.fit(X, y)
-    pipe_runtime = Pipeline.export(pipe)
+    pipe_runtime = pipe.to_runtime()
 
     print_speed_comparison(X, pipe, pipe_runtime)
 
