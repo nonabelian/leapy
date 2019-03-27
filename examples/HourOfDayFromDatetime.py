@@ -24,7 +24,6 @@ class HourOfDayFromDatetime(object):
         self.fit(X, y=y)
         return self.transform(X)
 
-    @staticmethod
-    def to_runtime(transformer):
+    def to_runtime(self):
         # No copying necessary for this simple transformer
         return HourOfDayFromDatetimeRuntime()

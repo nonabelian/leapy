@@ -68,14 +68,13 @@ class FeaturePipeline(object):
         self.fit(X, y, **fit_kwargs)
         return self.transform(X)
 
-    @staticmethod
-    def to_runtime(pipeline):
+    def to_runtime(self):
         pipe_runtime = FeaturePipelineRuntime(
-            [(name, step.to_runtime(), pipeline.named_steps_cols[name])
-             for name, step in pipeline.named_steps.items()])
-        pipe_runtime.named_schema = pipeline.named_schema
-        pipe_runtime.drop = pipeline.drop
-        pipe_runtime.feature_size = pipeline.feature_size
-        pipe_runtime.input_shape = pipeline.input_shape
+            [(name, step.to_runtime(), self.named_steps_cols[name])
+             for name, step in self.named_steps.items()])
+        pipe_runtime.named_schema = self.named_schema
+        pipe_runtime.drop = self.drop
+        pipe_runtime.feature_size = self.feature_size
+        pipe_runtime.input_shape = self.input_shape
 
         return pipe_runtime

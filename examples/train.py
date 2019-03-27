@@ -13,7 +13,7 @@ from sklearn.pipeline import Pipeline
 import dask.array as da
 from dask_ml.linear_model import LogisticRegression
 
-import leapy
+# import leapy
 from leapy.dask.pipeline import FeaturePipeline
 from leapy.dask.transformers import OneHotEncoder
 from HourOfDayFromDatetime import HourOfDayFromDatetime
@@ -62,8 +62,8 @@ if __name__ == '__main__':
 
     pipe = Pipeline([
         ('feature_pipe',FeaturePipeline([
-            ('ohe_0', OneHotEncoder(sparse=False), [1]),
-            ('ohe_1', OneHotEncoder(sparse=False), [2]),
+            # ('ohe_0', OneHotEncoder(sparse=False), [1]),
+            # ('ohe_1', OneHotEncoder(sparse=False), [2]),
             # ('ohe_2', OneHotEncoder(sparse=False), [1]),
             # ('ohe_3', OneHotEncoder(sparse=False), [2]),
             # ('ohe_4', OneHotEncoder(sparse=False), [1]),
