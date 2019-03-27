@@ -62,8 +62,8 @@ if __name__ == '__main__':
 
     pipe = Pipeline([
         ('feature_pipe',FeaturePipeline([
-            # ('ohe_0', OneHotEncoder(sparse=False), [1]),
-            # ('ohe_1', OneHotEncoder(sparse=False), [2]),
+            ('ohe_0', OneHotEncoder(sparse=False), [1]),
+            ('ohe_1', OneHotEncoder(sparse=False), [2]),
             # ('ohe_2', OneHotEncoder(sparse=False), [1]),
             # ('ohe_3', OneHotEncoder(sparse=False), [2]),
             # ('ohe_4', OneHotEncoder(sparse=False), [1]),
