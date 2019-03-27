@@ -3,7 +3,8 @@
 ~~~~~~~~~~~~~~~~~**Work in progress**~~~~~~~~~~~~~~~~~
 
 Welcome!  Leapy is a library for real-time, sub-millisecond inference;
-it provides machine learning pipeline export for fast model serving. 
+it provides customizable machine learning pipeline export for fast
+model serving. 
 These pipelines are based on Dask's scalable machine learning, which
 follows the Scikit-Learn API.
 
@@ -12,8 +13,8 @@ Leapy is inspired by [MLeap](https://github.com/combust/mleap).
 ### Why?
 
 Dask provides a Python distributed computing environment with a
-burgeoning machine learning component (compatible with Scikit-Learn's API).
-With leapy we can serve these models in real-time.
+burgeoning machine learning component, compatible with Scikit-Learn's API.
+With leapy we can serve these pipelines in real-time!
 
 This means:
 
