@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../')
+sys.path.append('../../')
 import pickle
 from string import ascii_lowercase
 from random import choice
@@ -16,7 +16,7 @@ from dask_ml.linear_model import LogisticRegression
 # import leapy
 from leapy.dask.pipeline import FeaturePipeline
 from leapy.dask.transformers import OneHotEncoder
-from HourOfDayFromDatetime import HourOfDayFromDatetime
+from transformers import HourOfDayFromDatetimeString
 
 
 def print_speed_comparison(X, pipe, pipe_runtime):
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     df = pd.DataFrame(pd.date_range(start=start_date,
                                     end=end_date,
                                     freq='H'),
-                      columns=['dt'])
+                      columns=['dt']).astype(str)
     categories = [''.join(choice(ascii_lowercase)
                   for _ in range(5))
                   for i in range(num_pts)]
@@ -72,16 +72,16 @@ if __name__ == '__main__':
             # ('ohe_7', OneHotEncoder(sparse=False), [1]),
             # ('ohe_8', OneHotEncoder(sparse=False), [1]),
             # ('ohe_9', OneHotEncoder(sparse=False), [1]),
-            ('hod_0', HourOfDayFromDatetime(), [0]),
-            ('hod_1', HourOfDayFromDatetime(), [0]),
-            ('hod_2', HourOfDayFromDatetime(), [0]),
-            ('hod_3', HourOfDayFromDatetime(), [0]),
-            ('hod_4', HourOfDayFromDatetime(), [0]),
-            ('hod_5', HourOfDayFromDatetime(), [0]),
-            ('hod_6', HourOfDayFromDatetime(), [0]),
-            ('hod_7', HourOfDayFromDatetime(), [0]),
-            ('hod_8', HourOfDayFromDatetime(), [0]),
-            ('hod_9', HourOfDayFromDatetime(), [0])])
+            ('hod_0', HourOfDayFromDatetimeString(), [0]),
+            ('hod_1', HourOfDayFromDatetimeString(), [0]),
+            ('hod_2', HourOfDayFromDatetimeString(), [0]),
+            ('hod_3', HourOfDayFromDatetimeString(), [0]),
+            ('hod_4', HourOfDayFromDatetimeString(), [0]),
+            ('hod_5', HourOfDayFromDatetimeString(), [0]),
+            ('hod_6', HourOfDayFromDatetimeString(), [0]),
+            ('hod_7', HourOfDayFromDatetimeString(), [0]),
+            ('hod_8', HourOfDayFromDatetimeString(), [0]),
+            ('hod_9', HourOfDayFromDatetimeString(), [0])])
         ),
         ('clf', LogisticRegression())
     ])
@@ -92,5 +92,5 @@ if __name__ == '__main__':
     print_speed_comparison(X, pipe, pipe_runtime)
 
     # Save for model serving
-    with open('pipe_runtime.pkl', 'wb') as f:
+    with open('model_repo/pipe_runtime.pkl', 'wb') as f:
         pickle.dump(pipe_runtime, f)

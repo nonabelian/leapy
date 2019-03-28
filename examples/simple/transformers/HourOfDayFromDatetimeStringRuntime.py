@@ -1,14 +1,16 @@
 import numpy as np
 
 
-class HourOfDayFromDatetimeRuntime(object):
+class HourOfDayFromDatetimeStringRuntime(object):
 
     def fit(self, X, y=None):
         return self
 
     def transform(self, X):
         def extract_day(ts):
-            return ts.to_pydatetime().hour
+            # This is about 3x slower
+            # return datetime.strptime(ts, '%Y-%m-%d %H:%M:%S').hour
+            return int(ts[11:13])
 
         return np.array(list(map(extract_day, X.ravel()))).reshape(-1, 1)
 

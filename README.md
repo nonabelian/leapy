@@ -5,8 +5,9 @@
 Welcome!  Leapy is a library for real-time, sub-millisecond inference;
 it provides customizable machine learning pipeline export for fast
 model serving. 
-These pipelines are based on Dask's scalable machine learning, which
-follows the Scikit-Learn API.
+These pipelines are targeted for using Dask's scalable machine learning,
+which follows the Scikit-Learn API. However, you can use this framework
+with Scikit-Learn as well.
 
 Leapy is inspired by [MLeap](https://github.com/combust/mleap).
 
@@ -84,7 +85,7 @@ And we export to a runtime pipeline, and save:
 import pickle
 
 pipe.fit(X, y)
-pipe_runtime = Pipeline.export(pipe)
+pipe_runtime = pipe.to_runtime()
 
 with open('pipe_runtime.pkl', 'wb') as f:
     pickle.dump(pipe_runtime, f)
