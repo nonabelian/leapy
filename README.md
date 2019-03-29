@@ -1,13 +1,13 @@
-# leapy
+![fast](images/leapy.gif)
 
-~~~~~~~~~~~~~~~~~**Work in progress**~~~~~~~~~~~~~~~~~
+**Just give me the dataz!**
 
 Welcome!  Leapy is a library for real-time, sub-millisecond inference;
 it provides customizable machine learning pipeline export for fast
 model serving. 
 These pipelines are targeted for using Dask's scalable machine learning,
 which follows the Scikit-Learn API. However, you can use this framework
-with Scikit-Learn as well.
+directly with Scikit-Learn as well.
 
 Leapy is inspired by [MLeap](https://github.com/combust/mleap).
 
@@ -19,22 +19,21 @@ With leapy we can serve these pipelines in real-time!
 
 This means:
 
-* No reliance on JVM from using Spark.
-* All Python development and custom transformers -- no Scala & Java needed!
-* Scale Scikit-Learn logic and pipelines to clusters.
+* No JVM: No reliance on JVM from using Spark.
+* Python: All Python development and custom transformers -- no Scala & Java
+          needed!
+* Scale: Scikit-Learn logic and pipelines scaled to clusters.
+* Simple: Easily build and deploy model with Docker.
+<!--* MLflow: Serve runtime models (as Scikit-Learn models) through `mlflow`.-->
 
-<!--Pros vs `mleap`:-->
-<!--* Custom transformers: Only need to write a Dask transformer, a runtime-->
-  <!--transformer, and a transformer export function.  All in Python;-->
-  <!--all with familiar numpy/scikit-learn APIs.-->
-<!--* Custom transformer: You might want to write a Spark transformer, runtime-->
-  <!--transformer, associated export function, and Python bindings.  Programming-->
-  <!--in Java, Scala, and Python.-->
-<!--* No JVM required.-->
+### Examples
 
-<!--Cons vs `mleap`:-->
-<!--* Many fewer ML algorithms in `dask_ml` right now (this can change!).-->
-<!--* Less production usage, community support.-->
+* [Simple](https://github.com/nonabelian/leapy/examples/simple)
+    -- Super simple example of creating, testing, and using custom
+    transformers
+* [XGBoost](https://github.com/nonabelian/leapy/examples/)
+    -- Advanced example of using XGBoost with Dask, saving, and serving the
+    model.
 
 ### Benchmarks
 
