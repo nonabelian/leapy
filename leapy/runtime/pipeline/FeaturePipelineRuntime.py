@@ -73,17 +73,15 @@ class FeaturePipelineRuntime(_BaseComposition):
     def fit(self, X, y=None, **fit_kwargs):
         self.input_shape = X.shape
 
-        X_out = X.copy()
         for name, transformer in self.named_steps.items():
             cols = self.named_steps_cols[name]
-            X_col = X_out[:, cols]
+            X_col = X[:, cols]
             X_tf = transformer.fit_transform(X_col)
 
             input_cols = len(cols)
             output_cols = X_tf.shape[1]
 
             self.named_schema.update({name: [input_cols, output_cols]})
-            X_out = np.concatenate([X_out, X_tf], axis=1)
 
         self.feature_size = 0
         for name, (input_cols, output_cols) in self.named_schema.items():
