@@ -40,6 +40,7 @@ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 DAMAGE.
 """
 
+import scipy.sparse as sps
 import numpy as np
 from sklearn.utils.metaestimators import _BaseComposition
 from sklearn.externals import six
@@ -143,6 +144,9 @@ class FeaturePipelineRuntime(_BaseComposition):
             cols = self.named_steps_cols[name]
             output_cols = self.named_schema[name][1]
             X_tf = transformer.transform(X[:, cols])
+            # TODO: Add support for sparse matrices here
+            if sps.issparse(X_tf):
+                X_tf = X_tf.todense()
             X_out[:, start_col_idx:start_col_idx + output_cols] = X_tf
 
             start_col_idx += output_cols
