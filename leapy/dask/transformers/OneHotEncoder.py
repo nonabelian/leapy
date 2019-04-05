@@ -1,4 +1,8 @@
-'''
+"""
+---------------------------------------------
+License regarding portions of the code below:
+    OneHotEncoder (highly modified)
+
 Copyright (c) 2017, Anaconda, Inc. and contributors
 All rights reserved.
 
@@ -27,7 +31,7 @@ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 THE POSSIBILITY OF SUCH DAMAGE.
-'''
+"""
 
 import dask
 import dask.array as da
