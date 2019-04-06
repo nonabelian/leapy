@@ -14,4 +14,7 @@ class OneHotEncoderExporter():
         data = np.array([cat[0] for cat in cats]).reshape(1, -1)
         ohe_runtime.fit(data)
 
+        ohe_runtime.num_features = \
+                len(np.concatenate(ohe_runtime.categories_))
+
         return ohe_runtime

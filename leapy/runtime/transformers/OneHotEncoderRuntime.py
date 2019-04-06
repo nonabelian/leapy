@@ -16,11 +16,12 @@ class OneHotEncoderRuntime(OneHotEncoder):
             self.cat_idx_map[c] = counter
             counter += 1
 
+        self.num_features = len(np.concatenate(self.categories_))
+
         return self
 
     def transform(self, X):
-        num_features = len(np.concatenate(self.categories_))
-        X_tf = np.zeros(shape=(X.shape[0], num_features))
+        X_tf = np.zeros(shape=(X.shape[0], self.num_features))
 
         for i, row in enumerate(X):
             for val in row:
