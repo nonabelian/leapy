@@ -14,7 +14,6 @@ import dask.array as da
 from dask.distributed import Client
 from dask_ml.linear_model import LogisticRegression
 
-# import leapy
 from leapy.dask.pipeline import FeaturePipeline
 from leapy.dask.transformers import OneHotEncoder
 from transformers import HourOfDayFromDatetimeString

@@ -15,7 +15,7 @@ Leapy is inspired by [MLeap](https://github.com/combust/mleap).
 
 Dask is a Python distributed computing environment in Python with a
 burgeoning machine learning component, compatible with Scikit-Learn's API.
-Using leapy's framework, we can serve these pipelines in real-time!
+Using Leapy's framework, we can serve these pipelines in real-time!
 
 This means:
 
@@ -39,11 +39,23 @@ This means:
 
 ### Benchmarks
 
+A simple example of what we're going for -- computing a one-hot-encoding,
+with ~200K labels, of a single data point (dask array `x_da` and numpy array
+`x = x_da.compute()`):
 
+![sample benchmark](images/sample_benchmark.png)
+
+Where `ohe_dml` (from `dask_ml`) and `ohe` (from `leapy`) are essentially the
+same; `ohe_sk` is from `scikit-learn` and `ohe_runtime` is from
+`ohe.to_runtime()`. And, running `compute()` on Dask transforms above bumps
+the time up to about 1 second.
+
+With the time we save using `ohe_runtime`, we can squeeze in many more
+transformations and an estimator to still come in under 1ms.
 
 ### Example Usage
 
-Start with a dataset in a dask array, `X`, and create a Scikit-Learn
+Start with a dataset in dask arrays, `X` and `y`, and create a Scikit-Learn
 pipeline:
 
 ```python
@@ -51,11 +63,11 @@ from dask_ml.linear_model import LogisticRegression
 from leapy.dask.transformers import OneHotEncoder
 from leapy.dask.pipeline import FeaturePipeline
 
-feature_pipe = FeaturePipeline([('ohe', OneHotEncoder(sparse=False), [0])])
-
 pipe = Pipeline([
-    ('feature_pipe', feature_pipe),
-    ('clf', LogisticRegression())
+        ('fp', FeaturePipeline([('ohe',
+                                 OneHotEncoder(sparse=False),
+                                 [0, 1])])),
+        ('clf', LogisticRegression())
 ])
 
 pipe.fit(X, y)
