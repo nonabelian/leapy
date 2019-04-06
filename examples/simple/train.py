@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 from sklearn.pipeline import Pipeline
 import dask.array as da
+from dask.distributed import Client
 from dask_ml.linear_model import LogisticRegression
 
 # import leapy
@@ -40,6 +41,8 @@ def print_speed_comparison(X, pipe, pipe_runtime):
 
 
 if __name__ == '__main__':
+    client = Client()
+
     # Lets make some fake data
     num_pts = 2000
     start_date = datetime(2019, 1, 1, 2)
