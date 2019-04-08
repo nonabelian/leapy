@@ -1,0 +1,7 @@
+name: base
+channels:
+    - defaults
+dependencies:
+    - python=3.7
+    - scikit-learn=0.20.3
+    - flask=1.0.2
