@@ -18,6 +18,8 @@ from leapy.dask.pipeline import FeaturePipeline
 from leapy.dask.transformers import OneHotEncoder
 from transformers import HourOfDayFromDatetimeString
 
+from schema import FEATURES
+
 
 def print_speed_comparison(X, pipe, pipe_runtime):
     print("Speed Test")
@@ -42,7 +44,10 @@ def print_speed_comparison(X, pipe, pipe_runtime):
 if __name__ == '__main__':
     client = Client()
 
-    # Lets make some fake data
+    #############
+    # Input data
+
+    # Lets make some fake input data
     num_pts = 2000
     start_date = datetime(2019, 1, 1, 2)
     end_date = start_date+ timedelta(hours=num_pts-1)
@@ -58,12 +63,15 @@ if __name__ == '__main__':
     df['cat_2'] = np.array(categories)
     df['label'] = np.random.choice([0, 1], size=df.shape[0])
 
-    features = ['dt', 'cat_1', 'cat_2']
-    X = da.from_array(df[features].values, chunks=df[features].shape)
+    #############################
+    # Model based on input data:
+
+    # Enforce feature order by specification
+    X = da.from_array(df[FEATURES].values, chunks=df[FEATURES].shape)
     y = da.from_array(df['label'].values, chunks=(df.shape[0],))
 
     pipe = Pipeline([
-        ('feature_pipe',FeaturePipeline([
+        ('fp',FeaturePipeline([
             ('ohe_0', OneHotEncoder(sparse=False), [1]),
             ('ohe_1', OneHotEncoder(sparse=False), [2]),
             # ('ohe_2', OneHotEncoder(sparse=False), [1]),
@@ -96,3 +104,5 @@ if __name__ == '__main__':
     # Save for model serving
     with open('model_repo/pipe_runtime.pkl', 'wb') as f:
         pickle.dump(pipe_runtime, f)
+
+    client.close()
