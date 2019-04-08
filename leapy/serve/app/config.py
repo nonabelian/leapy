@@ -7,7 +7,6 @@ class Config:
         self.ENV = 'production'
         self.DEBUG = False
         self.TESTING = False
-        self.PIPELINE_FILE = os.path.join('data', 'pipeline.pkl')
         self.LOGGING_LEVEL = logging.WARNING
         self.FORMAT_STRING = '%(asctime)s {}: '.format('app')\
                              + '%(name)-12s %(levelname)-8s %(message)s'
@@ -22,6 +21,9 @@ class Config:
                      'level': self.LOGGING_LEVEL
                     }
         }
+
+        self.PIPELINE_FILE = os.path.join('/data', 'pipeline.pkl')
+        self.TEST_POINT = os.path.join('/data', 'test_point.json')
 
 
 class ProductionConfig(Config):
@@ -39,5 +41,8 @@ class DevelopmentConfig(Config):
         self.LOGGING_CONFIG['handlers']['h']['level'] = self.LOGGING_LEVEL
         self.LOGGING_CONFIG['root']['level'] = self.LOGGING_LEVEL
 
+        self.PIPELINE_FILE = os.path.join('test', 'model_repo', 'pipeline.pkl')
+        self.TEST_POINT = os.path.join('test', 'model_repo', 'test_point.json')
 
-EnvironmentConfig = ProductionConfig()
+
+EnvironmentConfig = DevelopmentConfig()
