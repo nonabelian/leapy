@@ -1,6 +1,6 @@
 import numpy as np
 
-from leapy.runtime.transformers import OneHotEncoderRuntime
+from .. import OneHotEncoderRuntime
 
 def test_transform():
     ohe = OneHotEncoderRuntime()

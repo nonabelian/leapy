@@ -44,7 +44,7 @@ import dask.array as da
 from sklearn.utils.metaestimators import _BaseComposition
 from sklearn.externals import six
 
-from leapy.runtime.pipeline import FeaturePipelineRuntime
+from ...runtime.pipeline import FeaturePipelineRuntime
 
 
 class FeaturePipeline(_BaseComposition):

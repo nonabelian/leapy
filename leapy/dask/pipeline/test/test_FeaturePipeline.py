@@ -5,7 +5,7 @@ from sklearn.dummy import DummyClassifier
 from sklearn.base import BaseEstimator
 from sklearn.base import TransformerMixin
 
-from leapy.dask.pipeline import FeaturePipeline
+from .. import FeaturePipeline
 
 
 class DummyTransformer(BaseEstimator, TransformerMixin):

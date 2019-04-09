@@ -1,9 +1,6 @@
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder
 
-# Simply set as sklearn OHE for now
-# OneHotEncoderRuntime = OneHotEncoder
-
 
 class OneHotEncoderRuntime(OneHotEncoder):
 

@@ -4,7 +4,7 @@ from sklearn.dummy import DummyClassifier
 from sklearn.base import BaseEstimator
 from sklearn.base import TransformerMixin
 
-from leapy.runtime.pipeline import FeaturePipelineRuntime
+from .. import FeaturePipelineRuntime
 
 
 class DummyTransformerRuntime(BaseEstimator, TransformerMixin):

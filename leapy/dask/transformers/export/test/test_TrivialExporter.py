@@ -1,4 +1,4 @@
-from leapy.dask.transformers.export import TrivialExporter
+from .. import TrivialExporter
 
 
 def test_trivial_export():

@@ -1,17 +1,16 @@
 import numpy as np
 
-import leapy
-from leapy.runtime.transformers import OneHotEncoderRuntime
+from ....runtime.transformers import OneHotEncoderRuntime
 
 
 class OneHotEncoderExporter():
     @staticmethod
     def to_runtime(self):
-        cats = self.categories_
-        ohe_runtime = OneHotEncoderRuntime(categories=cats,
-                                           sparse=False)
+        categories = self.categories_
+        ohe_runtime = OneHotEncoderRuntime(categories=categories,
+                                           sparse=self.sparse)
 
-        data = np.array([cat[0] for cat in cats]).reshape(1, -1)
+        data = np.array([cat[0] for cat in categories]).reshape(1, -1)
         ohe_runtime.fit(data)
 
         ohe_runtime.num_features = \
