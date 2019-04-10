@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='leapy',
-      version='0.0.1',
+      version='0.0.2',
       description='Real-time inference pipelines',
       long_description=long_description,
       long_description_content_type="text/markdown",
