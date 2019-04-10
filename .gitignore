@@ -7,3 +7,7 @@ __pycache__/
 .pytest_cache/
 *.pkl
 dask-worker-space
+build/
+*.eggs
+dist/
+*.egg-info
