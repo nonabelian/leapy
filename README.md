@@ -97,15 +97,16 @@ ddf = dd.from_pandas(df_pd, npartitions=1)
 Create our pipeline:
 
 ```python
+from sklearn.pipeline import Pipeline
 from dask_ml.linear_model import LogisticRegression
 from leapy.dask.transformers import OneHotEncoder
 from leapy.dask.pipeline import FeaturePipeline
 from leapy.serve import init
 
 pipe = Pipeline([
-        ('fp', FeaturePipeline([('ohe',
-                                 OneHotEncoder(sparse=False),
-                                 [0, 1])])),
+        ('fp', FeaturePipeline([
+            # One-Hot-Encode 'test_str' feature, drop 'test_int'
+            ('ohe', OneHotEncoder(sparse=False), [1])])),
         ('clf', LogisticRegression())
 ])
 
