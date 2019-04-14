@@ -6,6 +6,10 @@ from dask_ml.linear_model import LogisticRegression
 from .dask.transformers.export import OneHotEncoderExporter
 from .dask.transformers.export import TrivialExporter
 
+
+__version__ = '0.0.3'
+
+
 class PipelineExporter():
     @staticmethod
     def to_runtime(self):

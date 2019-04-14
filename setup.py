@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='leapy',
-      version='0.0.2',
+      version='0.0.3',
       description='Real-time inference pipelines',
       long_description=long_description,
       long_description_content_type="text/markdown",
@@ -30,7 +30,8 @@ setup(name='leapy',
                         'dask>=1.1.4',
                         'dask-ml>=0.12.0',
                         'numpy>=1.16.2',
-                        'scikit-learn>=0.20.3'],
+                        'scikit-learn>=0.20.3',
+                        'marshmallow>=2.19.2'],
       setup_requires=['pytest-runner'],
       tests_require=['pytest',
                      'numpy',
