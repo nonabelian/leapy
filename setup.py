@@ -36,4 +36,7 @@ setup(name='leapy',
       tests_require=['pytest',
                      'numpy',
                      'dask'],
+      entry_points={
+          'console_scripts': ['leap=leapy.serve.leap:main'],
+      },
       zip_safe=False)
