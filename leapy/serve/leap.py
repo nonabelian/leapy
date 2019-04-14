@@ -1,7 +1,9 @@
 import os
 import sys
 import argparse
-from io import BytesIO
+from tempfile import mkdtemp
+from shutil import rmtree
+from shutil import copytree
 
 import docker
 
@@ -9,7 +11,7 @@ import docker
 APP_DIRECTORY = os.path.relpath(
     os.path.join(os.path.dirname(__file__), 'app'))
 
-DOCKERFILE_FMT = """
+DOCKERFILE = """
 FROM ubuntu:16.04
 RUN apt-get update --fix-missing && apt-get install -y wget bzip2
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
@@ -18,8 +20,9 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
     echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
     echo "conda activate base" >> ~/.bashrc
-COPY {REL_APP_DIRECTORY} /app
-COPY {REL_MODEL_CODE}/* /app/
+COPY app/app.py /app/app.py
+COPY app/config.py /app/config.py
+COPY ./* /app/
 RUN /opt/conda/bin/conda env update -f /app/conda.yaml
 EXPOSE 8080
 WORKDIR /app
@@ -32,41 +35,40 @@ def serve(args):
     name = tag.replace('/', '_')
     repo = os.path.dirname(os.path.abspath(args.repo))
     model_code = os.path.relpath(args.codedir)
-    model_code_abs = os.path.abspath(model_code)
-    # put Dockerfile in with model/project code
-    dockerfile_out = os.path.join(model_code_abs, 'Dockerfile')
 
-    # NOTE: Translate to relative paths (relative to Dockerfile location)
-    #       for Dockerfile use.
+    build_dir = mkdtemp()
+    project_dir = os.path.join(build_dir, 'project')
 
-    # copy model code to /app
-    model_code_rel = os.path.relpath(model_code_abs, model_code_abs)
-    # copy leapy app code to /app
-    app_directory_rel = os.path.relpath(APP_DIRECTORY, dockerfile_out)
-    app_directory_rel = os.path.join(app_directory_rel, 'app')
-
-    # Dockerfile
-    file_params = {'REL_APP_DIRECTORY': app_directory_rel,
-                   'REL_MODEL_CODE': model_code_rel}
-    dockerfile = DOCKERFILE_FMT.format(**file_params)
+    copytree(model_code, project_dir)
 
     print("Creating Dockerfile")
+    dockerfile_out = os.path.join(build_dir, 'project', 'Dockerfile')
     if os.path.exists(dockerfile_out):
+        rmtree(build_dir)
         raise ValueError("Dockerfile already exists! Remove first.")
     with open(dockerfile_out, 'w') as f:
-        f.write(dockerfile)
+        f.write(DOCKERFILE)
+
+    if os.path.exists(os.path.join(model_code, 'app.py')) \
+       or os.path.exists(os.path.join(model_code, 'config.py')):
+        rmtree(build_dir)
+        raise ValueError("app.py or config.py found! Cannot proceed.")
+    copytree(APP_DIRECTORY, os.path.join(project_dir, 'app'))
 
     # Client
     client = docker.from_env()
 
     # Build
     print(f"Building container {tag} ...")
-    for step in client.api.build(path=model_code_abs,
+    for step in client.api.build(path=project_dir,
                                  rm=True,
                                  tag=tag,
                                  nocache=True
                                 ):
         print(step)
+
+    print(f"Cleaning up working directory: {build_dir}")
+    rmtree(build_dir)
 
     if args.run == 'on':
         image = client.images.get(name=tag)
