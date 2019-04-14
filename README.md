@@ -9,7 +9,29 @@ These pipelines are targeted for using Dask's scalable machine learning,
 which follows the Scikit-Learn API. However, you can use this framework
 directly with Scikit-Learn as well.
 
-Leapy is inspired by [MLeap](https://github.com/combust/mleap).
+```python
+pipe = Pipeline([
+        ('fp', FeaturePipeline([('ohe',
+                                 OneHotEncoder(sparse=False),
+                                 [0, 1])])),
+        ('clf', LogisticRegression())
+])
+
+pipe.fit(X, y)
+
+pipeline_runtime = pipe.to_runtime()               # ⚡⚡⚡ 
+init('./model_repo', pipeline_runtime, df.head())  # Ready to deploy
+```
+
+And serve this super fast pipeline:
+```
+$ leap serve --repo ./model_repo
+$ curl localhost:8080:/health
+{
+  "status": "healthy"
+}
+```
+(See below for benchmarks and a more detailed usage example.)
 
 ### Benefits
 
@@ -23,7 +45,7 @@ This means:
 * Python: All Python development and custom transformers -- no Scala & Java
           needed!
 * Scale: Scikit-Learn logic and pipelines scaled to clusters.
-* Fast: You're in control of how fast your transformers are!
+* Fast: You're in control of how fast your transformers are.
 * Simple: Easily build and deploy models with Docker.
 * Reliable: Encourages a test-driven approach.
 <!--* MLflow: Serve runtime models (as Scikit-Learn models) through `mlflow`.-->
@@ -55,13 +77,30 @@ transformations and an estimator to still come in under 1ms.
 
 ### Example Usage
 
-Start with a dataset in dask arrays, `X` and `y`, and create a Scikit-Learn
+Start with a dataset in dask arrays, `X`, `y`, and dataframe `ddf`:
 pipeline:
+```python
+import numpy as np
+import pandas as pd
+import dask.array as da
+import dask.dataframe as dd
+
+X_np = np.array([[1, 'a'], [2, 'b']], dtype=np.object)
+df_pd = pd.DataFrame(X_np, columns=['test_int', 'test_str'])
+y_np = np.array([0, 1])
+
+X = da.from_array(X_np, chunks=X_np.shape)
+y = da.from_array(y_np, chunks=y_np.shape)
+ddf = dd.from_pandas(df_pd, npartitions=1)
+```
+
+Create our pipeline:
 
 ```python
 from dask_ml.linear_model import LogisticRegression
 from leapy.dask.transformers import OneHotEncoder
 from leapy.dask.pipeline import FeaturePipeline
+from leapy.serve import init
 
 pipe = Pipeline([
         ('fp', FeaturePipeline([('ohe',
@@ -73,13 +112,28 @@ pipe = Pipeline([
 pipe.fit(X, y)
 ```
 
-Then we export to a runtime pipeline, and save:
+Then we export to a runtime pipeline and get ready for model serving:
 
 ```python
 pipe_runtime = pipe.to_runtime()
-
-with open('pipe_runtime.pkl', 'wb') as f:
-    pickle.dump(pipe_runtime, f)
+init('./model_repo', pipe_runtime, ddf.head())
 ```
 
-This model is ready to be served! [Docker](docs/DOCKER.md)
+Finally we serve the model:
+```
+$ leap serve --repo ./model_repo
+$ curl localhost:8080/predict \
+    -X POST \
+    -H "Content-Type: application/json" \
+    --data '{"test_int": 1, "test_str": "b"}'
+{
+  "prediction": 1.0
+}
+```
+
+
+For more on model serving see [leapy/serve/README.md](leapy/serve/README.md).
+
+## Acknowledgments
+
+Leapy is inspired by [MLeap](https://github.com/combust/mleap).
