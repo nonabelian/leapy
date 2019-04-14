@@ -7,7 +7,7 @@ from .dask.transformers.export import OneHotEncoderExporter
 from .dask.transformers.export import TrivialExporter
 
 
-__version__ = '0.0.3'
+__version__ = '0.1.0'
 
 
 class PipelineExporter():
