@@ -1,5 +1,9 @@
 import os
+import sys
 import logging
+
+from schema import MODEL_SCHEMA
+from test.schema import MODEL_SCHEMA as TEST_MODEL_SCHEMA
 
 
 class Config:
@@ -25,6 +29,8 @@ class Config:
         self.PIPELINE_FILE = os.path.join('/data', 'pipeline.pkl')
         self.TEST_POINT = os.path.join('/data', 'test_point.json')
 
+        self.MODEL_SCHEMA = MODEL_SCHEMA
+
 
 class ProductionConfig(Config):
     def __init__(self):
@@ -43,6 +49,9 @@ class DevelopmentConfig(Config):
 
         self.PIPELINE_FILE = os.path.join('test', 'model_repo', 'pipeline.pkl')
         self.TEST_POINT = os.path.join('test', 'model_repo', 'test_point.json')
+        self.MODEL_SCHEMA = TEST_MODEL_SCHEMA
+
+        sys.path.append('../../../')
 
 
 EnvironmentConfig = DevelopmentConfig()

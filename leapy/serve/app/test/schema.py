@@ -5,7 +5,8 @@ from marshmallow import fields
 class ModelSchema(Schema):
     class Meta:
         ordered = True
-    test = fields.Integer()
+    test_int = fields.Integer()
+    test_str = fields.String()
 
 MODEL_SCHEMA = ModelSchema()
 

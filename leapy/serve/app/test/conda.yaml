@@ -4,4 +4,9 @@ channels:
 dependencies:
     - python=3.7
     - scikit-learn=0.20.3
+    - dask=1.1.4
+    - dask-ml=0.12.0
+    - marshmallow=3.0.0
     - flask=1.0.2
+    pip:
+        - leapy>=0.0.3

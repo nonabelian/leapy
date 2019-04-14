@@ -1,1 +1,1 @@
-{"data": {"test": 1}, "target": [1]}
+{"data": {"test_int": 1, "test_str": "a"}, "target": [1]}

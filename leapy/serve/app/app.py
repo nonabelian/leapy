@@ -2,6 +2,7 @@ import sys
 import pickle
 import json
 import argparse
+import logging
 from logging.config import dictConfig
 
 from flask import Flask
@@ -9,12 +10,12 @@ from flask import jsonify
 from flask import request
 import numpy as np
 
-from schema import MODEL_SCHEMA
-from schema import FEATURES
 from config import EnvironmentConfig
 
 
 dictConfig(EnvironmentConfig.LOGGING_CONFIG)
+
+MODEL_SCHEMA = EnvironmentConfig.MODEL_SCHEMA
 
 
 with open(EnvironmentConfig.PIPELINE_FILE, 'rb') as f:
@@ -31,7 +32,8 @@ app.config.from_object('config.EnvironmentConfig')
 @app.route('/predict', methods=['POST'])
 def predict():
     data = MODEL_SCHEMA.load(request.get_json())
-    pt = np.array([[v for v in data.values()]])
+    pt = np.array([[v for v in data.values()]],
+                  dtype=np.object)
     y_pred = float(PIPELINE.predict(pt)[0])
 
     return jsonify({'prediction': y_pred})
@@ -39,14 +41,18 @@ def predict():
 
 @app.route('/health')
 def health():
+    logger = logging.getLogger('/health')
     data_json = json.dumps(TEST_POINT['data'])
     data = MODEL_SCHEMA.loads(data_json)
-    pt = np.array([[v for v in data.values()]])
+    pt = np.array([[v for v in data.values()]],
+                  dtype=np.object)
     y_pred = PIPELINE.predict(pt)
     y_exp = np.array(TEST_POINT['target'])
     if np.all(y_exp == y_pred):
+        logger.info("Predictions match expected.")
         return jsonify({'status': 'healthy'})
     else:
+        logger.info("Predictions DO NOT match expected.")
         return jsonify({'status': 'unhealthy'})
 
 
