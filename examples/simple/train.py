@@ -17,6 +17,7 @@ from dask_ml.linear_model import LogisticRegression
 from leapy.dask.pipeline import FeaturePipeline
 from leapy.dask.transformers import OneHotEncoder
 from transformers import HourOfDayFromDatetimeString
+from leapy.serve import init
 
 from schema import FEATURES
 
@@ -102,7 +103,6 @@ if __name__ == '__main__':
     print_speed_comparison(X, pipe, pipe_runtime)
 
     # Save for model serving
-    with open('model_repo/pipe_runtime.pkl', 'wb') as f:
-        pickle.dump(pipe_runtime, f)
+    init('./model_repo', pipe_runtime, df[FEATURES].head())
 
     client.close()

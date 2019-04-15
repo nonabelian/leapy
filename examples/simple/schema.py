@@ -2,18 +2,13 @@ from marshmallow import Schema
 from marshmallow import fields
 
 
-FEATURES_SCHEMA = [('dt', fields.Str()),
-                  ('cat_1', fields.Str()),
-                  ('cat_2', fields.Str())]
-
-FEATURES = [f for f, _ in FEATURES_SCHEMA]
-
-
 class ModelSchema(Schema):
     class Meta:
         ordered = True
+    dt = fields.String()
+    cat_1 = fields.String()
+    cat_2 = fields.String()
 
-for feature, dtype in FEATURES_SCHEMA:
-    setattr(ModelSchema, feature, dtype)
+MODEL_SCHEMA = ModelSchema()
 
-model_schema = ModelSchema()
+FEATURES = list(MODEL_SCHEMA.declared_fields.keys())

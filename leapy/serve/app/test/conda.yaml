@@ -9,4 +9,4 @@ dependencies:
     - marshmallow=3.0.0
     - flask=1.0.2
     - pip:
-        - leapy>=0.0.3
+        - leapy>=0.1.0
