@@ -1,6 +1,7 @@
 import os
 import sys
 import argparse
+from time import sleep
 from tempfile import mkdtemp
 from shutil import rmtree
 from shutil import copytree
@@ -33,7 +34,7 @@ CMD ["/opt/conda/bin/python", "app.py"]
 def serve(args):
     tag = 'leapy/' + args.tag
     name = tag.replace('/', '_')
-    repo = os.path.dirname(os.path.abspath(args.repo))
+    repo = os.path.abspath(args.repo)
     model_code = os.path.relpath(args.codedir)
 
     build_dir = mkdtemp()
@@ -63,7 +64,7 @@ def serve(args):
     for step in client.api.build(path=project_dir,
                                  rm=True,
                                  tag=tag,
-                                 nocache=True
+                                 # nocache=True
                                 ):
         print(step)
 
@@ -80,7 +81,11 @@ def serve(args):
                                        'mode': 'ro'}}
                    }
         container = client.containers.run(image, **c_params)
-        print(f"Container '{tag}' running with name {container.name}")
+        meta = client.api.inspect_container(container.id)
+        if meta['State']['Running']:
+            print(f"Container '{tag}' running with name {container.name}")
+        else:
+            print(f"Container '{tag}' NOT RUNNINT")
     print("DONE")
 
 
