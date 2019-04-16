@@ -22,7 +22,7 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -
     echo "conda activate base" >> ~/.bashrc
 COPY app/app.py /app/app.py
 COPY app/config.py /app/config.py
-COPY ./* /app/
+COPY . /app/
 RUN /opt/conda/bin/conda env update -f /app/conda.yaml
 EXPOSE 8080
 WORKDIR /app
@@ -75,13 +75,12 @@ def serve(args):
         # Run
         print(f"Starting Container {tag}...")
         c_params = {'detach': True,
-                    'name': name,
-                    'ports': {'8080/tcp': ('127.0.0.1', 8080)},
+                    'ports': {'8080/tcp': ('0.0.0.0', 8080)},
                     'volumes': {repo: {'bind': '/data',
                                        'mode': 'ro'}}
                    }
-        client.containers.run(image, **c_params)
-        print(f"Container '{tag}' running with name {name}")
+        container = client.containers.run(image, **c_params)
+        print(f"Container '{tag}' running with name {container.name}")
     print("DONE")
 
 
