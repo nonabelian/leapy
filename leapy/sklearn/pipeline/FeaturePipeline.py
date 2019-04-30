@@ -142,7 +142,7 @@ class FeaturePipeline(_BaseComposition):
         for name, transformer in self.named_steps.items():
             cols = self.named_steps_cols[name]
             X_col = X[:, cols]
-            X_tf = ss.csr_matrix(transformer.transform(X_col).astype(np.float64))
+            X_tf = ss.csr_matrix(transformer.transform(X_col))
 
             if X_out is None:
                 X_out = X_tf

@@ -26,7 +26,7 @@ class HourOfDayFromDatetimeString(BaseEstimator, TransformerMixin):
                                       .hour]
                              for t in ts])
 
-        return  X.map_blocks(extract_day, dtype=np.object)
+        return  X.map_blocks(extract_day, dtype=np.float64)
 
     def to_runtime(self):
         # No copying necessary for this simple transformer

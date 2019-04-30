@@ -73,6 +73,7 @@ if __name__ == '__main__':
 
     pipe = Pipeline([
         ('fp',FeaturePipeline([
+            # LogisticRegression doesn't support sparse
             ('ohe_0', OneHotEncoder(sparse=False), [1]),
             ('ohe_1', OneHotEncoder(sparse=False), [2]),
             # ('ohe_2', OneHotEncoder(sparse=False), [1]),
