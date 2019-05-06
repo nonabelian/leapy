@@ -1,5 +1,7 @@
 ![fast](images/leapy.gif)
 
+**Under construction/active development!**
+
 **Just give me the dataz!**
 
 Welcome!  Leapy is a library for real-time, sub-millisecond inference;
@@ -26,7 +28,7 @@ init('./model_repo', pipeline_runtime, df.head())  # Ready to deploy
 And serve this super fast pipeline:
 ```
 $ leap serve --repo ./model_repo
-$ curl localhost:8080:/health
+$ curl localhost:8080/health
 {
   "status": "healthy"
 }
